@@ -1,0 +1,42 @@
+extends ../layouts/main-layout.pug
+
+block cssStyles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    main
+        //- saying where sneding post request. If it is in editing post request is differnet than if initializing product for the first time
+        form.product-form(action="/admin/" + path, method="POST") 
+            .form-control
+                label(for="title") Title
+                if editing
+                    input(type="text", name="title" value = product.title)
+                else
+                    input(type="text", name="title")
+            .form-control
+                label(for="imageURL") Image URL
+                if editing
+                    input(type="text", name="imageURL" value = product.image)
+                else
+                    input(type="text", name="imageURL")
+            .form-control
+                label(for="price") Price
+                if editing
+                    input(type="text", name="price" step = "0.01", value = product.price)
+                else
+                    input(type="text", step = "0.01", name="price")
+                //- stepp allows you to have two decimal places 
+            .form-control
+                label(for="description") Description
+                if editing
+                    textarea(name="description", rows = "5") #{product.description}
+                else
+                    textarea(name="description", rows = "5")
+            if editing
+                button.btn(type = "submit") Update Product
+            else
+                button.btn(type="submit") Add Product
+            //- attributes are put in brackets and separated by commas
+        

@@ -1,0 +1,19 @@
+extends ../layouts/main-layout.pug
+
+block cssStyles
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    main.centered
+        h1 #{product.title}
+        hr
+        img(src=product.image, alt="Product Title")
+        h2 #{product.price}
+        p #{product.description}
+        form(action = "/cart", method = "POST")
+            button.btn Add to cart
+            input(type="hidden", name="productId", value = product.id)
+            input(type="hidden", name="productPrice", value = product.price)
+
+            //-  making a hidden input so you are able to track the request data but dont want to input anything to the web app
