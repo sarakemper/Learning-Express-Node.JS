@@ -1,16 +1,11 @@
 const data = require('../models/product')
 const Cart = require('../models/cart')
 
-exports.shopGet = (req, res, next) => {
-    data.fetchAll((products) => {
-        res.render('shop/shop', {docTitle: 'My Shop', prods: products}) 
-    })
-}
-
 exports.getIndex = (req, res) => {
-    data.fetchAll((products) => {
-        res.render('shop/index', {docTitle: 'My Shop', prods: products}) 
-    })
+    //destructuring the array you get back (your rows, the metadata)
+  data.fetchAll().then(([rows, fieldData]) => {
+    res.render('shop/index', {docTitle: 'My Shop', prods: rows, path: '/'}) //rows is an array with the product object (each index is a different product)
+  }).catch(err => console.log(err))
 }
 
 exports.getCart = (req, res) => {
@@ -52,9 +47,9 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-    data.fetchAll((products) => {
-        res.render('shop/product-list', {docTitle: 'Products', prods: products}) 
-    })
+  data.fetchAll().then(([rows, fieldData]) => {
+    res.render('shop/product-list', {docTitle: 'Products', prods: rows, path: 'products'}) 
+  }).catch(err => console.log(err))
 }
 
 exports.getOrders = (req, res) => {
@@ -62,11 +57,11 @@ exports.getOrders = (req, res) => {
 }
 
 exports.getDetails = (req, res) => {
-  data.fetchbyId(req.params.productId, (product) => {
-    res.render('shop/product-detail', {docTitle: "Details", path: 'products', product: product})
-    console.log(product)
-  })
-  //accessing the id number of the product
+  data.fetchbyId(req.params.productId).then(([row, metaData]) => {
+    console.log(row)
+    res.render('shop/product-detail', {docTitle: "Details", path: 'products', product: row[0]})
+  }).catch(err => console.log(err))
+    
 }
 
 exports.postDeleteCart = (req, res) => {

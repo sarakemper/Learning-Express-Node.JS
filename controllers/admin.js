@@ -7,8 +7,9 @@ exports.addProductGet = (req, res, next) => {
 exports.addProductPost = (req, res, next) => {
     const product = new data(null, req.body.title, req.body.imageURL, req.body.description, req.body.price,) //got this info from name field in input 
     //have to put null cuz id is null
-    product.save()
-    res.redirect('/');
+    product.save().then(() => {
+        res.redirect('/');
+    }).catch(err => console.log(err))
 }
 
 exports.getAdminProducts = (req, res) => {
