@@ -1,14 +1,10 @@
-const mysql = require('mysql2')
+const Sequelize = require('sequelize')
 
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    database: 'node-complete', //made new schema within the SQL workbench
-    password: '!Louise12'
-}) 
+const sequelize = new Sequelize('node-complete', 'root', '!Louise12', {
+    dialect: 'mysql',
+    host: 'localhost' //automatically connects to localhost and creates a pool
+})
+//dialect says to say it s a mysql database
 
-module.exports = pool.promise() //allow to use promises 
+module.exports = sequelize;
 
-
-//creating pool of connections -> see oneNote for explanation
-//you close the pool when you're done getting stuff from the database

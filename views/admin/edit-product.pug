@@ -18,9 +18,9 @@ block content
             .form-control
                 label(for="imageURL") Image URL
                 if editing
-                    input(type="text", name="imageURL" value = product.image)
+                    input(type="text", name="image" value = product.image)
                 else
-                    input(type="text", name="imageURL")
+                    input(type="text", name="image")
             .form-control
                 label(for="price") Price
                 if editing
@@ -40,7 +40,7 @@ block content
             else
                 button.btn(type="submit") Add Product
             if editing
-                input(type = "hidden", value = product.id, name = "productId") 
+                input(type = "hidden", value = product.id, name = "id") 
             //- making sure to return product id so can fetch it 
             //- attributes are put in brackets and separated by commas
         

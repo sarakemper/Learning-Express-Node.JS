@@ -169,6 +169,14 @@ form {
   text-align: center;
 }
 
+.image {
+  max-height: 20rem;
+}
+
+.image img {
+  height: 100%;
+}
+
 .centered img {
   width: 50%;
 }

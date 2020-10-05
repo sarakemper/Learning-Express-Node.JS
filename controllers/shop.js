@@ -2,12 +2,13 @@ const data = require('../models/product')
 const Cart = require('../models/cart')
 
 exports.getIndex = (req, res) => {
-    //destructuring the array you get back (your rows, the metadata)
-  data.fetchAll().then(([rows, fieldData]) => {
-    res.render('shop/index', {docTitle: 'My Shop', prods: rows, path: '/'}) //rows is an array with the product object (each index is a different product)
-  }).catch(err => console.log(err))
-}
-
+  data.findAll({raw: true}).then((rows) => {
+    res.render('shop/index', {docTitle: 'My Shop', prods: rows, path: '/'})
+    // console.log(rows)
+  }
+  ).catch(err => console.log(err))
+} //find all returns an array.  This array that is returned is just an array with 1 element. In there you have the datavalues that you can access by .id and .title, etc.  Datavalues and product are undefined.  So in the array you can access the .title and stuff.  Note that each index in rows corresponds to 1 row.  Just has other stuff along with it 
+//the extra shit is just sequelizes extra clutter for the databases.  .get({raw: true}) just returns the key value pairs.  It delivers the exact same answer just console.logging is cleaner
 exports.getCart = (req, res) => {
     Cart.getCart((cart) => {
       data.fetchAll(products => {
@@ -47,7 +48,7 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-  data.fetchAll().then(([rows, fieldData]) => {
+  data.findAll().then((rows) => {
     res.render('shop/product-list', {docTitle: 'Products', prods: rows, path: 'products'}) 
   }).catch(err => console.log(err))
 }
@@ -57,9 +58,9 @@ exports.getOrders = (req, res) => {
 }
 
 exports.getDetails = (req, res) => {
-  data.fetchbyId(req.params.productId).then(([row, metaData]) => {
-    console.log(row)
-    res.render('shop/product-detail', {docTitle: "Details", path: 'products', product: row[0]})
+  data.findByPk(req.params.productId).then((product) => {
+    console.log(product)
+    res.render('shop/product-detail', {docTitle: "Details", path: 'products', product: product})
   }).catch(err => console.log(err))
     
 }

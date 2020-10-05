@@ -1,31 +1,29 @@
-const Cart = require('./cart')
-const db = require('../util/database')
+const sequelize = require('sequelize')
+const db = require('../util/database') //has not just a pool but all the features ex. making relations, etc.
 
-module.exports = class Product {
-  constructor(id, title, image, description, price) {
-    this.id = id;
-    this.title = title;
-    this.image = image;
-    this.description = description;
-    this.price = price;
+const Product = db.define('product', {
+  id: {
+    type: sequelize.INTEGER,
+    autoIncrement: true,
+    allNull: false,
+    primaryKey: true,
+  },
+  title: sequelize.STRING,
+  price: {
+    type: sequelize.DOUBLE,
+    allowNull: false
+  },
+  image: {
+    type: sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: sequelize.STRING,
+    allowNull: false
   }
 
-  save() {
-    return db.execute('INSERT INTO products(title, price,description, image) VALUES(?, ?, ?, ?)', 
-    [this.title, this.price, this.description, this.image])
-    
-  } /*INSERT INTO command inserts into a table. ? allows you to safely insert values.  This is becasue there is an attack method wehre you can just insert values to access database or something*/
-//the elements in the array replace the ?, ?, ?, ?  mySQL package does hidden query's or something 
+})
 
-  static fetchAll() {
-    return db.execute('SELECT * FROM products');
-  }
-
-  static fetchbyId(id) {
-    return db.execute('SELECT * FROM products WHERE products.id = ?', [id])
-  } //again doing quesiton mark for security
-
-  static deleteProduct(id){
-
-  }
-};
+module.exports = Product;
+//makes a model (db.define).  Making restrictions for the different columns.  The meaning of hte restrictions is in oneNote but under the form in the workbench.
+//cautomatically adds createdAT and updatedAt which turn out to be columns in the table.  They are time stamps.
