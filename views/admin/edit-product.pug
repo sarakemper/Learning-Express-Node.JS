@@ -34,9 +34,13 @@ block content
                     textarea(name="description", rows = "5") #{product.description}
                 else
                     textarea(name="description", rows = "5")
+            
             if editing
                 button.btn(type = "submit") Update Product
             else
                 button.btn(type="submit") Add Product
+            if editing
+                input(type = "hidden", value = product.id, name = "productId") 
+            //- making sure to return product id so can fetch it 
             //- attributes are put in brackets and separated by commas
         

@@ -5,7 +5,8 @@ exports.addProductGet = (req, res, next) => {
 }
 
 exports.addProductPost = (req, res, next) => {
-    const product = new data(req.body.title, req.body.imageURL, req.body.price, req.body.description) //got this info from name field in input 
+    const product = new data(null, req.body.title, req.body.imageURL, req.body.description, req.body.price,) //got this info from name field in input 
+    //have to put null cuz id is null
     product.save()
     res.redirect('/');
 }
@@ -26,11 +27,25 @@ exports.getEditProduct = (req, res, next) => {
         if (!product){
             return res.status(404).render('404', {pageTitle: 'Product not found'});
         }
-        console.log(product.description)
         res.render('admin/edit-product', {pageTitle: 'Edit Product', isActive: true, editing: true, product: product, path: 'edit-product'}) //note can also make editing = editMode -> it's the same thing since it returns true
 
     })
 
+}
+
+exports.postEditProduct = (req, res) => {
+    const prodId = req.body.productId
+    console.log(prodId)
+    const updatedProduct = new data(prodId, req.body.title, req.body.imageURL, req.body.description, req.body.price)
+    updatedProduct.save();
+    res.redirect('/admin/adminProducts')
+}
+
+exports.postDelete = (req, res) => {
+    const prodId = req.body.productId;
+    const productPrice = req.body.productPrice
+    data.deleteProduct(prodId, productPrice)
+    res.redirect('/admin/adminProducts')
 }
 
 
