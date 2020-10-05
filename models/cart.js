@@ -63,9 +63,11 @@ module.exports = class Cart {
             let cart = JSON.parse(fileContent)
             const updatedCart = {...cart}
             let deleteProduct = cart.products.filter((product) => product.id === id)
-            console.log(deleteProduct.quantity)
-            if (deleteProduct.quantity !== null)
-                updatedCart.totalPrice =  updatedCart.totalPrice - (Number(productPrice) * Number(deleteProduct.quantity))
+            console.log("dete this product", deleteProduct)
+            if (deleteProduct[0].quantity !== null)
+                console.log(updatedCart.totalPrice, "updated cart total price", deleteProduct.quantity)
+                updatedCart.totalPrice =  updatedCart.totalPrice - productPrice * deleteProduct[0].quantity
+                console.log(updatedCart.totalPrice, "new updated cart")
             updatedCart.products = cart.products.filter((product) => product.id !== id)
             fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
                 console.log(err)
